@@ -8,7 +8,7 @@ import time
 import torch.nn.functional as F
 
 
-def train_epoch(args, dataloader, model, criterion, optimizer, lr_scheduler, logger):
+def train_epoch(args, dataloader, model, criterion, optimizer, logger):
 
     total_loss = []
     model.train()
@@ -22,14 +22,13 @@ def train_epoch(args, dataloader, model, criterion, optimizer, lr_scheduler, log
 
             optimizer.zero_grad()
 
-            with torch.no_grad():
-                score1 = model(emb1)
-                score2 = model(emb1)
+            score1 = model(emb1)
+            score2 = model(emb2)
 
             pred = torch.sigmoid(score1 - score2) 
-
             # compute loss
-            loss = criterion(label, pred)
+            loss = criterion(pred.squeeze(),label)
+
             # loss backward
             loss.backward()
             # optimizer and scheduler step
@@ -39,17 +38,16 @@ def train_epoch(args, dataloader, model, criterion, optimizer, lr_scheduler, log
             
             pbar.set_description('training')
             pbar.set_postfix({'loss(iter)':float(loss.detach().cpu()), 
-                              'loss(mean)':np.mean(total_loss),
-                              'lr':lr_scheduler.get_last_lr()})
+                              'loss(mean)':np.mean(total_loss)})
             pbar.update(1)
 
     epoch_loss = np.mean(total_loss)
     #print(f'train_epoch_loss: {epoch_loss}')  
-    logger.append(f'train_epoch_loss: {epoch_loss}')
-    logger.append(f'train_lr : {lr_scheduler.get_last_lr()[0]}')
+    if logger:
+        logger.append(f'train_epoch_loss: {epoch_loss}')
      
 
-def evaluate(args, dataloader, model, criterion, optimizer, logger):
+def evaluate_epoch(args, dataloader, model, criterion, optimizer, logger):
 
     total_loss = []
     model.eval()
@@ -69,6 +67,7 @@ def evaluate(args, dataloader, model, criterion, optimizer, logger):
 
             pred = torch.sigmoid(score1 - score2) 
             # compute loss
+            print(type(pred),type(label))
             loss = criterion(label, pred)
             # sum losses in a epoch
             total_loss.append(loss.detach().cpu())
