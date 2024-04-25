@@ -14,7 +14,6 @@ def train_epoch(args, dataloader, model, criterion, optimizer, logger):
     model.train()
     with tqdm(total=len(dataloader)) as pbar: 
         for i, (emb1, emb2, emb3, emb4, label) in enumerate(dataloader):
-
             # load to device
             emb1,emb2 = emb1.cuda(non_blocking=True),emb2.cuda(non_blocking=True)
             emb3,emb4 = emb3.cuda(non_blocking=True),emb4.cuda(non_blocking=True)
@@ -78,7 +77,7 @@ def eval_epoch(args, dataloader, model, criterion, logger=None):
             acc = (predicted == label).float().mean()  # Compute accuracy
             total_acc.append(acc.item())  # Store accuracy for mean calculation
             # Update progress bar
-            pbar.set_description('Evaluating')
+            pbar.set_description('evaluating')
             pbar.set_postfix({
                 'loss(iter)': loss.item(),
                 'loss(mean)': np.mean(total_loss),

@@ -1,0 +1,11 @@
+Namespace(model_save_path='/root/Data_Scoring_Model/checkpoints/04%H46.pth', logger_name='/root/Data_Scoring_Model/logger/log_04%H46', gpu_id='cuda', train_val_ratio=0.8, batch_size=128, num_workers=32, csv_path='/root/Data_Scoring_Model/data/pair15w.csv', lr=1e-07, weight_decay=0.001, eps=1e-08, warmup_ratio=0.1, epochs=5, resume=False)
+Train epoch loss: 0.4448210895061493, Train epoch accuracy: 0.7997068166732788
+Eval epoch loss: 0.12504622660418774, Eval epoch accuracy: 0.9970523050490846
+Train epoch loss: 0.1625647097826004, Train epoch accuracy: 0.9750966429710388
+Eval epoch loss: 0.04454780132212537, Eval epoch accuracy: 0.9996453901554676
+Train epoch loss: 0.0857771709561348, Train epoch accuracy: 0.9934034943580627
+Eval epoch loss: 0.019404952636266008, Eval epoch accuracy: 1.0
+Train epoch loss: 0.05315188691020012, Train epoch accuracy: 0.9978427886962891
+Eval epoch loss: 0.009301319989831523, Eval epoch accuracy: 1.0
+Train epoch loss: 0.035292163491249084, Train epoch accuracy: 0.9989339113235474
+Eval epoch loss: 0.005200080800444839, Eval epoch accuracy: 1.0

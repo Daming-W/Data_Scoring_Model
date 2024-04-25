@@ -107,33 +107,46 @@ class PairDataset(Dataset):
         
         return emb1_tensor,emb2_tensor,emb3_tensor,emb4_tensor,label_tensor
     
+
+
 class InferenceDataset(Dataset):
+    
+    def __init__(self, jsonl_path, transform=None):
+        self.jsonl_path = jsonl_path
+        self.transform = transform
+        self.all_raw_emb = self._generate_emb()
+        self.length = self._get_length()
 
-    def __init__(self, jsonl_path,  transform=None):
-        with jsonlines.open(jsonl_path,'r') as raw:
-            self.all_raw_emb = list(raw)
+    def _generate_emb(self):
 
-            self.img_emb = [em['__dj__stats__']['image_embedding'][0] for em in self.all_raw_emb]
-            self.txt_emb = [em['__dj__stats__']['text_embedding'][0] for em in self.all_raw_emb]
-            self.sim_score = [em['__dj__stats__']['image_text_similarity'][0] for em in self.all_raw_emb]
+        with jsonlines.open(self.jsonl_path, 'r') as raw:
+            for item in raw:
+                img_emb = item['__dj__stats__']['image_embedding'][0]
+                txt_emb = item['__dj__stats__']['text_embedding'][0]
+                sim_score = item['__dj__stats__']['image_text_similarity'][0]
+                yield img_emb, txt_emb, sim_score
+
+    def _get_length(self):
+        with jsonlines.open(self.jsonl_path, 'r') as raw:
+            return sum(1 for _ in raw)
 
     def __len__(self):
-        return len(self.data)
+        return self.length
 
     def __getitem__(self, idx):
-
-        emb1 = self.img_emb[idx][0]
-        emb2 = self.txt_emb[idx][1]
-        score = float(self.sim_score[idx][0])
+        with jsonlines.open(self.jsonl_path, 'r') as raw:
+            for i, (img_emb, txt_emb, sim_score) in enumerate(raw):
+                if i == idx:
+                    break
 
         if self.transform:
-            emb1 = self.transform(emb1)
-            emb2 = self.transform(emb2)
+            img_emb = self.transform(img_emb)
+            txt_emb = self.transform(txt_emb)
 
-        emb1_tensor = torch.tensor(emb1, dtype=torch.float32)
-        emb2_tensor = torch.tensor(emb2, dtype=torch.float32)
+        img_emb_tensor = torch.tensor(img_emb, dtype=torch.float32)
+        txt_emb_tensor = torch.tensor(txt_emb, dtype=torch.float32)
 
-        return emb1_tensor, emb2_tensor
+        return img_emb_tensor, txt_emb_tensor
 
 
 if __name__=='__main__':

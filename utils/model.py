@@ -40,7 +40,7 @@ class FusionScoreModel(nn.Module):
             dropout=0.1,
             activation='relu'
         )
-        self.transformer_encoder = nn.TransformerEncoder(self.transformer_encoder_layer, num_layers=3)
+        self.transformer_encoder = nn.TransformerEncoder(self.transformer_encoder_layer, num_layers=4)
 
         self.mlp = nn.Sequential(
             nn.Linear(self.token_embed_dim, 768),
@@ -56,14 +56,10 @@ class FusionScoreModel(nn.Module):
 
     def forward(self, img_embedding, txt_embedding):
 
-        img_input = torch.cat([self.img_token.repeat(img_embedding.size(0), 1), img_embedding], dim=1)
-        txt_input = torch.cat([self.txt_token.repeat(txt_embedding.size(0), 1), txt_embedding], dim=1)
-
-
-        combined_input = torch.cat([img_input, txt_input], dim=1).unsqueeze(0)  
+        combined_input = torch.cat((img_embedding, txt_embedding), axis=1)
 
         transformer_output = self.transformer_encoder(combined_input)
-        transformer_output = transformer_output.squeeze(0)
 
         score = self.mlp(transformer_output)
         return score
+

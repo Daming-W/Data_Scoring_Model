@@ -1,0 +1,1 @@
+Namespace(model_save_path='/root/Data_Scoring_Model/checkpoints/04%H44.pth', logger_name='/root/Data_Scoring_Model/logger/log_04%H44', gpu_id='cuda', train_val_ratio=0.8, batch_size=128, num_workers=16, csv_path='/root/Data_Scoring_Model/data/pair15w.csv', lr=1e-07, weight_decay=0.001, eps=1e-08, warmup_ratio=0.1, epochs=5, resume=False)

@@ -1,0 +1,3 @@
+Namespace(model_save_path='/root/Data_Scoring_Model/checkpoints/04%H43.pth', logger_name='/root/Data_Scoring_Model/logger/log_04%H43', gpu_id='cuda', train_val_ratio=0.8, batch_size=32, num_workers=16, csv_path='/root/Data_Scoring_Model/data/pair1k.csv', lr=1e-07, weight_decay=0.001, eps=1e-08, warmup_ratio=0.1, epochs=5, resume=False)
+Train epoch loss: 0.7773875594139099, Train epoch accuracy: 0.5012500286102295
+Eval epoch loss: 0.6555379373686654, Eval epoch accuracy: 0.6160714285714286

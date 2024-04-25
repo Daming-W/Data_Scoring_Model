@@ -36,9 +36,9 @@ if __name__=="__main__":
     parser.add_argument("--train_val_ratio", type=float,
                         default=0.8, help="train set and val set dataset ratio")
     parser.add_argument("--batch_size", type=int,
-                        default=32, help="batch size of data")      
+                        default=128, help="batch size of data")      
     parser.add_argument("--num_workers", type=int,
-                        default=16, help="number of workers")   
+                        default=32, help="number of workers")   
     parser.add_argument("--csv_path", type=str,
                         default='/root/Data_Scoring_Model/data/pair15w.csv', help="path of pairwise dataset csv")   
 
@@ -93,7 +93,8 @@ if __name__=="__main__":
     # train and eval
     print('<<< start training >>>')
     for epoch in range(args.epochs):
-        print(f'<<< epoch {epoch} >>>')
+        print(f'<<< epoch {epoch+1} >>>')
+        logger.append(f'epoch : {epoch+1}')
         train_epoch(args, train_dataloader, model, criterion, optimizer, logger)
         eval_epoch(args, val_dataloader, model, criterion, logger)
     
