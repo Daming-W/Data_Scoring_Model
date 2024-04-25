@@ -24,12 +24,12 @@ parser.add_argument("--train_val_ratio", type=float,
 parser.add_argument("--batch_size", type=int,
                     default=32, help="batch size of data")      
 parser.add_argument("--num_workers", type=int,
-                    default=16, help="number of workers")   
+                    default=64, help="number of workers")   
 parser.add_argument("--csv_path", type=str,
-                    default='/root/QCM/data/pair10w.csv', help="path of pairwise dataset csv")   
+                    default='/root/Data_Scoring_Model/data/pair15w.csv', help="path of pairwise dataset csv")   
 # hyperparameters
 parser.add_argument("--lr", type=float,
-                    default=1e-4, help="learning rate")   
+                    default=1e-6, help="learning rate")   
 parser.add_argument("--weight_decay", type=float,
                     default=0.001, help="weight_decay")
 parser.add_argument("--eps", type=float,
@@ -45,6 +45,7 @@ args = parser.parse_args()
 
 if __name__=="__main__":
     mp.set_start_method('spawn')
+    torch.cuda.empty_cache()
 
     if torch.cuda.is_available():
         device = torch.device('cuda:0')
