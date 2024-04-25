@@ -13,7 +13,6 @@ venv/
 *.pkl
 *.zip
 *.bin
-*.txt
 *.pcd
 *.json
 *.jsonl
